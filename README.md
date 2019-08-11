@@ -17,9 +17,9 @@ REQUIREMENTS
 
 SETUP
 
-Download and install Vagrant and VirtualBox.
-Download the VM configuration by forking and cloning the Github repository https://github.com/udacity/fullstack-nanodegree-vm.
-Change to the vagrant directory with cd /vagrant and start the virtual machine from the terminal inside the vagrant directory with vagrant up.
-When it is finished, use vagrant ssh to log into the virtual machine.
-Load the database with psql -d news -f newsdata.sql
-To run the reporting tool, use python logsanalysis.py
+- Download and install Vagrant and VirtualBox.
+- Download the VM configuration by forking and cloning the Github repository https://github.com/udacity/fullstack-nanodegree-vm.
+- Change to the vagrant directory with cd /vagrant and start the virtual machine from the terminal inside the vagrant directory with vagrant up.
+- When it is finished, use vagrant ssh to log into the virtual machine.
+- Load the database with psql -d news -f newsdata.sql
+- To run the reporting tool, use python logsanalysis.py
