@@ -1,0 +1,18 @@
+The shared directory is located at /vagrant
+To access your shared files: cd /vagrant
+Last login: Sun Aug 11 11:04:58 2019 from 10.0.2.2
+vagrant@vagrant:~$ cd /vagrant
+vagrant@vagrant:/vagrant$ python logsanalysis.py
+
+3 most popular articles of all time are:
+Candidate is jerk, alleges rival" - 338647 views
+Bears love berries, alleges bear" - 253801 views
+Bad things gone, say good people" - 170098 views
+
+Most popular article authors of all time are:
+Ursula La Multa - 507594 views
+Rudolf von Treppenwitz - 423457 views
+Anonymous Contributor - 170098 views
+Markoff Chaney - 84557 views
+
+
