@@ -3,7 +3,7 @@ Project 1 for the udacity fullstack nanodegree
 
 DESCRIPTION
 
-For this assignment, I had to create a reporting tool that prints out reports in plain text based on an SQL database. Three questions had to be answered:
+For this assignment, I had to create a reporting tool that prints out reports in plain text based on a PostgreSQL database. Three questions had to be answered:
 1. What are the most popular three articles of all time?
 2. Who are the most popular article authors of all time?
 3. On which days did more than 1% of requests lead to errors?
