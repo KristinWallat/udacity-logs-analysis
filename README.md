@@ -22,18 +22,50 @@ SETUP
 - Change to the vagrant directory with cd /vagrant and start the virtual machine from the terminal inside the vagrant directory with vagrant up.
 - When it is finished, use vagrant ssh to log into the virtual machine.
 - Load the database with psql -d news -f newsdata.sql
+
+RUNNING THE PROGRAM
+
 - In order to answer the third question, I recommend creating VIEWS (see below)
 - To run the reporting tool, use python logsanalysis.py
 
 VIEWS
 
-In order to create VIEWS, type psql -d news and run the following:
+* In order to create VIEWS, type psql -d news
+For anyone new to (SQL) programming, I recommend splitting the question in three parts to make it easier to understand what is happening. Experienced developers can join the three views in one view.
 
-CREATE VIEW requests_errors AS
-SELECT count(status) requests_errors , TO_CHAR(time, 'Month DD, YYYY') AS day FROM log WHERE status ='%404 NOT FOUND%' 
-GROUP BY TO_CHAR(time, 'Month DD, YYYY') ORDER BY count(status) desc;
+Part I - Get the top 3 error logs
 
-The Terminal should say "CREATE VIEW"
-Exit "news" with \q
+news=> CREATE VIEW error_logs AS SELECT count(*) AS stat, status, cast(time as date) AS day FROM log WHERE status='404 NOT FOUND stat desc limit 3;
+
+***To see the result:***
+ 
+news=> select * from error_logs;
+ stat |    status     |    day
+------+---------------+------------
+ 1265 | 404 NOT FOUND | 2016-07-17
+  433 | 404 NOT FOUND | 2016-07-19
+  431 | 404 NOT FOUND | 2016-07-24
+(3 rows)
+
+Part II - Get the total visits with errortime
+
+news=> CREATE VIEW total_visits AS SELECT count(*) as visitors, cast(time as date) AS errortime FROM log GROUP BY errortime;
+
+Part III - Get the error days with visitors
+
+news=> CREATE VIEW error_days AS SELECT * from error_logs join total_visits ON error_logs.day = total_visits.errortime;
+
+***To see the result:***
+
+news=> select * from error_days;
+ stat |    status     |    day     | visitors | errortime
+------+---------------+------------+----------+------------
+ 1265 | 404 NOT FOUND | 2016-07-17 |    55907 | 2016-07-17
+  433 | 404 NOT FOUND | 2016-07-19 |    55341 | 2016-07-19
+  431 | 404 NOT FOUND | 2016-07-24 |    55100 | 2016-07-24
+(3 rows)
+
+
+
 
 
