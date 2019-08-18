@@ -40,12 +40,7 @@ news=> CREATE VIEW error_logs AS SELECT count(*) AS stat, status, cast(time as d
 ***To see the result:***
  
 news=> select * from error_logs;
- stat |    status     |    day
-------+---------------+------------
- 1265 | 404 NOT FOUND | 2016-07-17
-  433 | 404 NOT FOUND | 2016-07-19
-  431 | 404 NOT FOUND | 2016-07-24
-(3 rows)
+
 
 Part II - Get the total visits with errortime
 
@@ -58,12 +53,7 @@ news=> CREATE VIEW error_days AS SELECT * from error_logs join total_visits ON e
 ***To see the result:***
 
 news=> select * from error_days;
- stat |    status     |    day     | visitors | errortime
-------+---------------+------------+----------+------------
- 1265 | 404 NOT FOUND | 2016-07-17 |    55907 | 2016-07-17
-  433 | 404 NOT FOUND | 2016-07-19 |    55341 | 2016-07-19
-  431 | 404 NOT FOUND | 2016-07-24 |    55100 | 2016-07-24
-(3 rows)
+
 
 
 
