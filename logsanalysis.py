@@ -3,58 +3,63 @@ import psycopg2
 DBNAME = "news"
 
 
-# 1st question query
+import psycopg2
+
+DBNAME = "news"
+
+
+# 1st question query: What are the most popular articles of all times?
 def get_popular_articles(num):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("""select articles.title, subq.views from articles join
-        (select right(path, -9), count(*) as views from log where
-        status='200 OK' and path like '/article/%%' group by path
-        order by views desc limit %d) as subq on articles.slug=subq.right
-        order by subq.views desc""" % num)
+    c.execute(
+        """select title, count(path) from articles, log
+                where status like '200%'
+                and concat('/article/', articles.slug) = log.path
+                group by title
+                order by count(path) desc
+                limit 4""")
     c_records = c.fetchall()
     db.close()
-    print("\n%d most popular articles of all time are: " % num)
-    for item in c_records:
-        print(str(item[0]) + '" - ' + str(item[1]) + " views")
+    print("4 most popular articles are: ")
+    for row in c_records:
+         print("\"" + row[0] + "\" - " + str(row[1]) + " views")
 
 
-# 2nd question query
+# 2nd question query: What are the most popular authors of all times?
 def get_popular_authors():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("""select authors.name, sub.views from authors join
-        (select articles.author, sum(subq.views) as views from articles join
-        (select right(path, -9), count(*) as views from log where
-        status='200 OK' and path like '/article/%' group by path)
-        as subq on articles.slug=subq.right group by articles.author
-        order by articles.author) as sub on authors.id=sub.author""")
+    c.execute(
+        """select authors.name, count(*)
+            from articles inner join
+            authors on articles.author = authors.id
+            inner join log on
+            concat('/article/', articles.slug) = log.path
+            where log.status like '200%'
+            group by authors.name
+            order by count(log.path) desc""")
     c_records = c.fetchall()
     db.close()
-    print("\nMost popular article authors of all time are: ")
-    for item in c_records:
-        print(str(item[0]) + " - " + str(item[1]) + " views")
+    print("\nMost popular article authors are: ")
+    for row in c_records:
+        print("\"" + row[0] + "\" - " + str(row[1]) + " views")
 
+# 3rd question query: On which days did more than 1% of requests lead to errors?
 
-# 3rd question query
-def get_errors(rate):
+def get_errors():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    # see READme to create Views
-    c.execute("select REPLACE(TO_CHAR(time,'Month DD,YYYY'),'      ',' ') \
-           as days,((requests_errors*100)/count(status)::float) as Percent\
-           from log,requests_errors where TO_CHAR(time,'Month DD,YYYY')= \
-           day group by (days,requests_errors) having ((requests_errors*100) \
-           /count(status))>1;")
+    c.execute(
+        """select cast((stat*100.00)/visitors as varchar(4)) as\n
+        result, TO_CHAR(errortime, 'Mon DD,YYYY')\n
+        FROM error_days ORDER BY result desc limit 1""")
     c_records = c.fetchall()
     db.close()
-    print("On these days did more than 1 percent of requests lead to errors:\
-        " + "\n")
-    for row in c_records:
-        print("* " + str(row[0]) + " -- " + str(round(row[1], 2)) + "% errors")
-
-
+    print("\nOn this day more than 1% of requests led to an error:")
+    for k in c_records:
+            print (str(k[0]) + "%" + "--" +str(k[1]))
 
 get_popular_articles(3)
 get_popular_authors()
-get_errors(1)
+get_errors()
