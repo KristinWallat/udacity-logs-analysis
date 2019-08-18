@@ -35,7 +35,7 @@ For anyone new to (SQL) programming, I recommend splitting the question in three
 
 Part I - Get the top 3 error logs
 
-news=> CREATE VIEW error_logs AS SELECT count(*) AS stat, status, cast(time as date) AS day FROM log WHERE status='404 NOT FOUND stat desc limit 3;
+news=>  CREATE VIEW error_logs AS SELECT count(*) AS stat, status, cast(time as date) AS day FROM log WHERE status='404 NOT FOUND' GROUP BY status, day ORDER BY stat desc limit 3;
 
 ***To see the result:***
  
