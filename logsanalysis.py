@@ -4,9 +4,8 @@ import psycopg2
 
 DBNAME = "news"
 
+
 # 1st question query: What are the most popular articles of all times?
-
-
 def get_popular_articles(num):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
@@ -61,4 +60,4 @@ def get_errors():
 
 get_popular_articles(3)
 get_popular_authors()
-get_errors()
+get_errors()'\n'
