@@ -4,12 +4,6 @@ import psycopg2
 
 DBNAME = "news"
 
-
-import psycopg2
-
-DBNAME = "news"
-
-
 # 1st question query: What are the most popular articles of all times?
 def get_popular_articles(num):
     db = psycopg2.connect(database=DBNAME)
