@@ -5,6 +5,8 @@ import psycopg2
 DBNAME = "news"
 
 # 1st question query: What are the most popular articles of all times?
+
+
 def get_popular_articles(num):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
@@ -19,7 +21,7 @@ def get_popular_articles(num):
     db.close()
     print("4 most popular articles are: ")
     for row in c_records:
-         print("\"" + row[0] + "\" - " + str(row[1]) + " views")
+        print("\"" + row[0] + "\" - " + str(row[1]) + " views")
 
 
 # 2nd question query: What are the most popular authors of all times?
@@ -41,7 +43,8 @@ def get_popular_authors():
     for row in c_records:
         print("\"" + row[0] + "\" - " + str(row[1]) + " views")
 
-# 3rd question query: On which days did more than 1% of requests lead to errors?
+# 3rd question query:On which days did more than 1% of requests lead to errors?
+
 
 def get_errors():
     db = psycopg2.connect(database=DBNAME)
@@ -54,7 +57,7 @@ def get_errors():
     db.close()
     print("\nOn this day more than 1% of requests led to an error:")
     for k in c_records:
-            print (str(k[0]) + "%" + "--" +str(k[1]))
+            print (str(k[0]) + "%" + "--" + str(k[1]))
 
 get_popular_articles(3)
 get_popular_authors()
