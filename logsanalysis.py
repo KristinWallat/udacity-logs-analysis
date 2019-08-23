@@ -57,7 +57,6 @@ def get_errors():
     print("\nOn this day more than 1% of requests led to an error:")
     for k in c_records:
             print(str(k[0]) + "%" + "--" + str(k[1]))
-
             
 get_popular_articles(3)
 get_popular_authors()
